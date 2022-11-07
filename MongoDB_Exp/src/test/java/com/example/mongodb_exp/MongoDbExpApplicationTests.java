@@ -1,7 +1,6 @@
 package com.example.mongodb_exp;
 
 import com.example.mongodb_exp.repository.CourseRepository;
-import com.example.mongodb_exp.entity.Course;
 import com.example.mongodb_exp.service.CourseService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +27,6 @@ class MongoDbExpApplicationTests {
 
 //        //查询
         System.out.println(courseRepository.findMaxOne());
+
     }
 }
