@@ -26,4 +26,8 @@ public class TeacherService {
             teacherRepository.save(teacher);
         }
     }
+
+    public Teacher findByTid(Integer tid){
+        return teacherRepository.findByTid(tid);
+    }
 }
