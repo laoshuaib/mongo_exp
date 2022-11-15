@@ -26,4 +26,10 @@ public class TeacherController {
         teacherService.saveOne(teacher);
         return Result.success();
     }
+
+    @PostMapping("/update")
+    public Result<?> update(@RequestBody @NotNull Teacher teacher){
+        teacherService.update(teacher);
+        return Result.success();
+    }
 }

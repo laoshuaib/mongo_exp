@@ -14,4 +14,5 @@ public interface StudentRepository extends MongoRepository<Student,String> {
             "{'$limit':1}"
     })
     List<Student> findMaxOne();
+    Student findBySid(Long sid);
 }

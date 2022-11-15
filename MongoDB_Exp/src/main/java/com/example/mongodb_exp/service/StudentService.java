@@ -21,4 +21,14 @@ public class StudentService {
         student.setSid(studentRepository.findMaxOne().get(0).getSid()+1);
         studentRepository.save(student);
     }
+
+    public void update(@NotNull Student student){
+        if (studentRepository.findBySid(student.getSid())!=null){
+            studentRepository.save(student);
+        }
+    }
+
+    public Student findBySid(Long sid){
+        return studentRepository.findBySid(sid);
+    }
 }

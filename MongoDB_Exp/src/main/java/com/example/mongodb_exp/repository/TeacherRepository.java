@@ -12,4 +12,5 @@ public interface TeacherRepository extends MongoRepository<Teacher,String> {
             "{'$limit':1}"
     })
     List<Teacher> findMaxOne();
+    Teacher findByTid(Integer tid);
 }

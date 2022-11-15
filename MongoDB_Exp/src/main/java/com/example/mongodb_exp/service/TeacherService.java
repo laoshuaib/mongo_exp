@@ -21,4 +21,9 @@ public class TeacherService {
         teacher.setTid(teacherRepository.findMaxOne().get(0).getTid()+1);
         teacherRepository.save(teacher);
     }
+    public void update(@NotNull Teacher teacher){
+        if(teacherRepository.findByTid(teacher.getTid())!=null){
+            teacherRepository.save(teacher);
+        }
+    }
 }
