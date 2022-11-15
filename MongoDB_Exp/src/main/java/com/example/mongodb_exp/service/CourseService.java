@@ -29,4 +29,10 @@ public class CourseService {
         return courseRepository.findCoursesByFcid(fcid);
     }
 
+    public void update(@NotNull Course course){
+        if (courseRepository.findByCid(course.getCid())!=null){
+            courseRepository.save(course);
+        }
+    }
+
 }

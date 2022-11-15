@@ -18,4 +18,5 @@ public interface CourseRepository extends MongoRepository<Course,String> {
             "{'$limit':1}"
     })
     List<Course> findMaxOne();
+
 }
