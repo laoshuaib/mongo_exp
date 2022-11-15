@@ -30,6 +30,7 @@ public class CourseService {
     }
 
     public void update(@NotNull Course course){
+        //多套一层，保证安全
         if (courseRepository.findByCid(course.getCid())!=null){
             courseRepository.save(course);
         }

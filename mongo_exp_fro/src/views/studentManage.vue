@@ -68,60 +68,41 @@
     </el-dialog>
   </div>
   <div style="padding: 10px">
-    <el-dialog v-model="dialogVisible" title="食材信息" width="30%">
+    <el-dialog v-model="dialogVisible" title="学生信息" width="30%">
       <el-form :model="form" label-width="100px">
-        <el-form-item label="食材ID">
-          <el-input v-model="form.id" disabled></el-input>
+        <el-form-item label="学生ID">
+          <el-input v-model="form.sid" disabled></el-input>
         </el-form-item>
-        <el-form-item label="食材名">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="性别">
+          <el-radio-group v-model="form.sex">
+            <el-radio label="男">男</el-radio>
+            <el-radio label="女">女</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="储量(kg)">
+        <el-form-item label="年龄">
           <el-input
-            v-model="form.reserves"
+            v-model.trim="form.age"
             oninput="value=value.replace(/[^0-9.]/g,'')"
           ></el-input>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <el-input v-model.trim="form.birthday"></el-input>
+        </el-form-item>
+        <el-form-item label="院系名称">
+          <el-input v-model.trim="form.dname"></el-input>
+        </el-form-item>
+        <el-form-item label="班级">
+          <el-input v-model.trim="form.grade"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <span>
-          <el-button type="primary" color="#fab6b6" @click="confirm"
+          <el-button type="primary" color="#fab6b6" @click="update"
             >保存</el-button
           >
         </span>
       </template>
     </el-dialog>
-
-    <el-dialog v-model="buyDialogVisible" title="采购" width="30%">
-      <el-form :model="buyForm" label-width="100px">
-        <el-form-item label="食材ID">
-          <el-input v-model="buyForm.ingredientID" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="食材名">
-          <el-input v-model="buyForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="采购量(kg)">
-          <el-input
-            v-model="buyForm.amount"
-            oninput="value=value.replace(/[^0-9.]/g,'')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="采购总价">
-          <el-input
-            v-model="buyForm.price"
-            oninput="value=value.replace(/[^0-9.]/g,'')"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span>
-          <el-button type="primary" color="#fab6b6" @click="buyConfirm"
-            >保存</el-button
-          >
-        </span>
-      </template>
-    </el-dialog>
-
     <el-table :data="tableData" border="border" height="580">
       <el-table-column prop="sid" label="学生编号" width="120px" />
       <el-table-column prop="name" label="姓名" />
@@ -132,7 +113,7 @@
       <el-table-column prop="grade" label="班级" />
       <el-table-column label="操作" width="200px" align="center">
         <template #default="scope">
-          <el-button size="mini" @click="handleBuy(scope.row)">暂无</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button size="mini" @click="handleEdit(scope.row)" color="#fab6b6"
             >暂无</el-button
           >
@@ -152,11 +133,8 @@ export default {
     return {
       dialogVisible: false,
       addDialogVisible: false,
-      buyDialogVisible: false,
       tableData: [],
       form: {}, //某行数据
-      buyForm: {}, //采购数据
-      feeForm: {}, //费用数据
       search: "",
     };
   },
@@ -198,44 +176,8 @@ export default {
           this.total = res.data.total;
         });
     },
-    confirm() {
-      this.$confirm(
-        "若食材名被修改,相关配方等内容可能发生变动, 是否继续?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
-        .then(() => {
-          this.update();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消修改",
-          });
-        });
-    },
-    buyConfirm() {
-      this.$confirm("采购记录一旦产生无法删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          this.saveBuy();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消采购",
-          });
-        });
-    },
     update() {
-      request.post("/ingredient/update", this.form).then((res) => {
+      request.post("/student/update", this.form).then((res) => {
         console.log(res);
         if (res.code === 0) {
           this.$message({
@@ -251,59 +193,6 @@ export default {
           });
         }
       });
-    },
-    saveBuy() {
-      request.post("/ingredient/saveBuy", this.buyForm).then((res) => {
-        if (res.code === 0) {
-          this.$message({
-            type: "success",
-            message: "采购成功",
-          });
-          this.buyDialogVisible = false;
-          this.load();
-          //产生费用
-          this.saveFee();
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg,
-          });
-        }
-      });
-    },
-    saveFee() {
-      this.feeForm.price = this.buyForm.price;
-      request.post("/fee/save", this.feeForm).then((res) => {
-        console.log(res);
-        if (res.code === 0) {
-          this.$message({
-            type: "success",
-            message: "相关费用已自动登记",
-          });
-        } else {
-          this.$message({
-            type: "error",
-            message: res.msg,
-          });
-        }
-      });
-    },
-
-    handleBuy(row) {
-      let str = sessionStorage.getItem("user");
-      //清空采购表单
-      this.buyForm.amount = "";
-      this.buyForm.price = "";
-      //采购表单默认数据
-      this.buyForm.userID = JSON.parse(str).id;
-      this.buyForm.ingredientID = JSON.parse(JSON.stringify(row)).id;
-      this.buyForm.name = JSON.parse(JSON.stringify(row)).name;
-      //费用表单默认数据(不对用户展示)
-      this.feeForm.type = "采购";
-      this.feeForm.userID = JSON.parse(str).id;
-      this.feeForm.note = "采购" + JSON.parse(JSON.stringify(row)).name;
-      //弹框控制
-      this.buyDialogVisible = true;
     },
     handleEdit(row) {
       this.form = JSON.parse(JSON.stringify(row));

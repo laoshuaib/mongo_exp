@@ -74,4 +74,19 @@ public class CourseController {
         }
         return Result.success();
     }
+
+    @PostMapping("/update")
+    public Result<?> update(@RequestBody @NotNull Course course){
+        //验证课序号是否存在
+        if (courseService.findByCid(course.getCid())==null){
+            return Result.error(-1,"先行课程不存在");
+        }
+        //验证先行课序号是否存在
+        if (course.getFcid()!=0&&courseService.findByCid(course.getFcid())==null){
+            return Result.error(-1,"先行课程不存在");
+        }
+        //更新（service层负责插入cid）
+        courseService.update(course);
+        return Result.success();
+    }
 }
