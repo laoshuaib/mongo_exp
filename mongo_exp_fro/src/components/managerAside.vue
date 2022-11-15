@@ -20,6 +20,10 @@
         <el-icon><Avatar /></el-icon>
         <span>教师管理</span>
       </el-menu-item>
+      <el-menu-item index="courseChoose">
+        <el-icon><Monitor /></el-icon>
+        <span>学生选课</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

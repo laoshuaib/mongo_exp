@@ -25,6 +25,11 @@ const routes = [
         name: "teacherManage",
         component: () => import("@/views/teacherManage"),
       },
+      {
+        path: "courseChoose",
+        name: "courseChoose",
+        component: () => import("@/views/courseChoose"),
+      },
     ],
   },
   {
