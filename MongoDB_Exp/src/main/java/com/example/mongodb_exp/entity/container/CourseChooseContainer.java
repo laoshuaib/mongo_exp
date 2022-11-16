@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CourseChooseContainer {
+    private Long sid;
     private Integer cid;
     private Integer fcid;
     private String cname;

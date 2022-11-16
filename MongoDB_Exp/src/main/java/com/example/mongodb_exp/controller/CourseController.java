@@ -55,6 +55,7 @@ public class CourseController {
 
     @PostMapping("/save")
     public Result<?> save(@RequestBody @NotNull Course course) {
+        System.out.println(course);
         //验证先行课序号是否存在
         if (course.getFcid() != 0 && courseService.findByCid(course.getFcid()) == null) {
             return Result.error(-1, "先行课程不存在");
@@ -101,7 +102,7 @@ public class CourseController {
         }
         //验证先行课序号是否存在
         if (course.getFcid() != 0 && courseService.findByCid(course.getFcid()) == null) {
-            return Result.error(-1, "先行课程不存在");
+            return Result.error(-1, "课程不存在");
         }
         //更新（service层负责插入cid）
         courseService.update(course);
@@ -125,7 +126,10 @@ public class CourseController {
             input.setCid(temp.getCid());
             input.setTid(temp.getTid());
             input.setCname(courseService.findByCid(temp.getCid()).getName());
-            input.setTname(teacherService.findByTid(temp.getTid()).getName());
+            if (input.getTid()==0){
+                input.setTname("暂无");
+            }else
+                input.setTname(teacherService.findByTid(temp.getTid()).getName());
             input.setFcid(courseService.findByCid(temp.getCid()).getFcid());
             input.setCredit(courseService.findByCid(temp.getCid()).getCredit());
             courseList.add(input);
@@ -145,7 +149,10 @@ public class CourseController {
             input.setCid(temp.getCid());
             input.setTid(temp.getTid());
             input.setCname(courseService.findByCid(temp.getCid()).getName());
-            input.setTname(teacherService.findByTid(temp.getTid()).getName());
+            if (input.getTid()==0){
+                input.setTname("暂无");
+            }else
+                input.setTname(teacherService.findByTid(temp.getTid()).getName());
             input.setFcid(courseService.findByCid(temp.getCid()).getFcid());
             input.setCredit(courseService.findByCid(temp.getCid()).getCredit());
             selectCourseList.add(input);
@@ -170,5 +177,26 @@ public class CourseController {
         resCourseList.removeAll(selectCourseList);
 
         return Result.success(resCourseList);
+    }
+
+    @PostMapping("/saveSelected")
+    public Result<?> saveSelected(@RequestBody @NotNull CourseChooseContainer courseChooseContainer) {
+        System.out.println(courseChooseContainer);
+        //验证先行课序号是否存在
+        if (courseChooseContainer.getFcid() != 0 && courseService.findByCid(courseChooseContainer.getFcid()) == null) {
+            return Result.error(-1, "先行课程不存在");
+        }
+        //验证课序号是否存在
+        if (courseService.findByCid(courseChooseContainer.getCid()) == null) {
+            return Result.error(-1, "课程不存在");
+        }
+        Student_Course input = new Student_Course();
+        input.setTid(courseChooseContainer.getTid());
+        input.setCid(courseChooseContainer.getCid());
+        input.setSid(courseChooseContainer.getSid());
+        input.setScore(-1.0);
+        //保存（service层负责插入cid）
+        student_courseService.saveOne(input);
+        return Result.success();
     }
 }
