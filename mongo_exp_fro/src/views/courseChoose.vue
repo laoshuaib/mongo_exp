@@ -61,7 +61,7 @@
       <el-table-column prop="tname" label="教师姓名" />
       <el-table-column label="操作" width="200px" align="center">
         <template #default="scope">
-          <el-button @click="handleEdit(scope.row)" color="#fab6b6"
+          <el-button @click="handleChoose(scope.row)" color="#fab6b6"
             >选课
           </el-button>
         </template>
@@ -134,14 +134,12 @@ export default {
       this.load();
     },
     save() {
-      request.post("/course/save", this.form).then((res) => {
+      request.post("/course/saveSelected", this.form).then((res) => {
         if (res.code === 0) {
           this.$message({
             type: "success",
-            message: "新增成功",
+            message: "选课成功",
           });
-          this.addDialogVisible = false;
-          this.form = {};
           this.load();
         } else {
           this.$message({
@@ -151,14 +149,18 @@ export default {
         }
       });
     },
-    update() {
-      request.post("/course/update", this.form).then((res) => {
+    handleChoose(row) {
+      this.form = JSON.parse(JSON.stringify(row));
+      this.form.sid = this.tempSid;
+      this.save();
+    },
+    delete() {
+      request.post("/course/saveSelected", this.form).then((res) => {
         if (res.code === 0) {
           this.$message({
             type: "success",
-            message: "更新成功",
+            message: "选课成功",
           });
-          this.dialogVisible = false;
           this.load();
         } else {
           this.$message({
