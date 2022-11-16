@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface Student_CourseRepository extends MongoRepository<Student_Course,String>{
     List<Student_Course> findBySid(Long sid);
+    List<Student_Course> findBySidAndCid(Long sid,Integer cid);
 }

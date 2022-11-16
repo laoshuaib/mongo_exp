@@ -19,4 +19,9 @@ public class Student_CourseService {
     public void saveOne(Student_Course student_course){
         student_courseRepository.save(student_course);
     }
+
+    public void deleteOne(Student_Course student_course){
+        Student_Course del = student_courseRepository.findBySidAndCid(student_course.getSid(),student_course.getCid()).get(0);
+        student_courseRepository.delete(del);
+    }
 }

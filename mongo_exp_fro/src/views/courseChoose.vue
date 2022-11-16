@@ -155,11 +155,11 @@ export default {
       this.save();
     },
     delete() {
-      request.post("/course/saveSelected", this.form).then((res) => {
+      request.post("/course/deleteSelected", this.form).then((res) => {
         if (res.code === 0) {
           this.$message({
             type: "success",
-            message: "选课成功",
+            message: "退课成功",
           });
           this.load();
         } else {
@@ -169,6 +169,11 @@ export default {
           });
         }
       });
+    },
+    handleDelete(row) {
+      this.form = JSON.parse(JSON.stringify(row));
+      this.form.sid = this.tempSid;
+      this.delete();
     },
   },
 };

@@ -181,7 +181,6 @@ public class CourseController {
 
     @PostMapping("/saveSelected")
     public Result<?> saveSelected(@RequestBody @NotNull CourseChooseContainer courseChooseContainer) {
-        System.out.println(courseChooseContainer);
         //验证先行课序号是否存在
         if (courseChooseContainer.getFcid() != 0 && courseService.findByCid(courseChooseContainer.getFcid()) == null) {
             return Result.error(-1, "先行课程不存在");
@@ -195,8 +194,16 @@ public class CourseController {
         input.setCid(courseChooseContainer.getCid());
         input.setSid(courseChooseContainer.getSid());
         input.setScore(-1.0);
-        //保存（service层负责插入cid）
         student_courseService.saveOne(input);
+        return Result.success();
+    }
+
+    @PostMapping("/deleteSelected")
+    public Result<?> deleteSelected(@RequestBody @NotNull CourseChooseContainer courseChooseContainer) {
+        Student_Course del = new Student_Course();
+        del.setCid(courseChooseContainer.getCid());
+        del.setSid(courseChooseContainer.getSid());
+        student_courseService.deleteOne(del);
         return Result.success();
     }
 }
