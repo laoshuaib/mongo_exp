@@ -24,6 +24,18 @@
         <el-icon><Monitor /></el-icon>
         <span>学生选课</span>
       </el-menu-item>
+      <el-menu-item index="courses">
+        <el-icon><Histogram /></el-icon>
+        <span>统计1</span>
+      </el-menu-item>
+      <el-menu-item index="studentsCount">
+        <el-icon><Histogram /></el-icon>
+        <span>统计3</span>
+      </el-menu-item>
+      <el-menu-item index="coursesCount">
+        <el-icon><Histogram /></el-icon>
+        <span>统计9</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

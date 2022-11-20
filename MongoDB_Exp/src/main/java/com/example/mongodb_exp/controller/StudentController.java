@@ -3,6 +3,7 @@ package com.example.mongodb_exp.controller;
 import cn.hutool.json.JSONUtil;
 import com.example.mongodb_exp.common.Result;
 import com.example.mongodb_exp.entity.Student;
+import com.example.mongodb_exp.entity.container.CountContainer;
 import com.example.mongodb_exp.service.StudentService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +48,11 @@ public class StudentController {
                 return Result.error(-1,"集合中存在不在数据库中的sid");
         }
         return Result.success();
+    }
+
+    @GetMapping("/viewChosenCount")
+    public Result<?> findChosenCount() {
+        List<CountContainer> list = studentService.findStudentCount();
+        return Result.success(list);
     }
 }

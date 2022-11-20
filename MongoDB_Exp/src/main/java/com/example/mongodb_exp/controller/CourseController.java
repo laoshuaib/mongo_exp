@@ -7,6 +7,7 @@ import cn.hutool.poi.excel.ExcelUtil;
 import com.example.mongodb_exp.common.Result;
 import com.example.mongodb_exp.entity.Course;
 import com.example.mongodb_exp.entity.Student_Course;
+import com.example.mongodb_exp.entity.container.CountContainer;
 import com.example.mongodb_exp.entity.container.CourseChooseContainer;
 import com.example.mongodb_exp.service.CourseService;
 import com.example.mongodb_exp.service.Student_CourseService;
@@ -206,4 +207,17 @@ public class CourseController {
         student_courseService.deleteOne(del);
         return Result.success();
     }
+
+    @GetMapping("/viewChosen")
+    public Result<?> findChosen() {
+        List<Course> courseList = courseService.findChosen();
+        return Result.success(courseList);
+    }
+
+    @GetMapping("/viewChosenCount")
+    public Result<?> findChosenCount() {
+        List<CountContainer> list = courseService.findCourseCount();
+        return Result.success(list);
+    }
+
 }

@@ -30,6 +30,21 @@ const routes = [
         name: "courseChoose",
         component: () => import("@/views/courseChoose"),
       },
+      {
+        path: "courses",
+        name: "courses",
+        component: () => import("@/views/courses"),
+      },
+      {
+        path: "coursesCount",
+        name: "coursesCount",
+        component: () => import("@/views/coursesCount"),
+      },
+      {
+        path: "studentsCount",
+        name: "studentsCount",
+        component: () => import("@/views/studentsCount"),
+      },
     ],
   },
   {

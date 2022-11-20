@@ -2,6 +2,7 @@ package com.example.mongodb_exp;
 
 import com.example.mongodb_exp.entity.Course;
 import com.example.mongodb_exp.repository.CourseRepository;
+import com.example.mongodb_exp.repository.Student_CourseRepository;
 import com.example.mongodb_exp.service.CourseService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ class MongoDbExpApplicationTests {
     private CourseService courseService;
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private Student_CourseRepository student_courseRepository;
     @Test
     void contextLoads() {
 
@@ -27,11 +31,7 @@ class MongoDbExpApplicationTests {
 //        System.out.println(res);
 
 //        //查询
-        System.out.println(courseRepository.findMaxOne());
-        Course course=courseRepository.findMaxOne().get(0);
-        course.setCredit(0.0);
-        courseService.update(course);
-        System.out.println(courseRepository.findMaxOne());
 //        courseRepository.cid();
+        System.out.println(student_courseRepository.getCidCount());
     }
 }

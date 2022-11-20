@@ -9,9 +9,11 @@ import java.util.List;
 
 
 @Repository
-public interface CourseRepository extends MongoRepository<Course,String> {
+public interface CourseRepository extends MongoRepository<Course, String> {
     Course findByCid(Integer cid);
+
     List<Course> findCoursesByFcid(Integer fcid);
+
     @Aggregation(pipeline = {
             "{'$sort':{'cid':-1}}",
             "{'$limit':1}"
